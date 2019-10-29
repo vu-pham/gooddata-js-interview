@@ -11,14 +11,73 @@ const dateAttribute = '/gdc/md/xms7ga4tf3g3nzucd8380o2bev8oeknp/obj/2180';
 
 class App extends Component {
 
+    state = {
+        options: [
+            {
+                name: 'January',
+                value: '01',
+            },
+            {
+                name: 'February',
+                value: '02',
+            },
+            {
+                name: 'March',
+                value: '03',
+            },
+            {
+                name: 'April',
+                value: '04',
+            },
+            {
+                name: 'May',
+                value: '05',
+            },
+            {
+                name: 'June',
+                value: '06',
+            },
+            {
+                name: 'July',
+                value: '07',
+            },
+            {
+                name: 'August',
+                value: '08',
+            },
+            {
+                name: 'September',
+                value: '09',
+            },
+            {
+                name: 'October',
+                value: '10',
+            },
+            {
+                name: 'November',
+                value: '11',
+            },
+            {
+                name: 'December',
+                value: '12',
+            }
+        ],
+        value: '01',
+    };
+
+    getLastDay(year, month) {
+        const date = new Date((new Date(year, month, 0)));
+        return date.getDate();
+    };
+
     getMonthFilter() {
         return {
             absoluteDateFilter: {
                 dataSet: {
                     uri: dateAttribute
                 },
-                from: '2016-01-01',
-                to: '2016-01-31'
+                from: `2016-${this.state.value}-01`,
+                to: `2016-${this.state.value}-${this.getLastDay(2016, this.state.value)}`
             }
 
         }
@@ -54,21 +113,22 @@ class App extends Component {
         }
     }
 
+    handleChange = (event) => {
+        this.setState({ value: event.target.value });
+    };
+
+
+
     renderDropdown() {
+        const { options, value } = this.state;
         return (
-            <select defaultValue="1">
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
+
+            <select onChange={this.handleChange} value={value}>
+            {options.map(item => (
+                <option key={item.value} value={item.value}>
+                    {item.name}
+                </option>
+            ))}
             </select>
         )
     }
